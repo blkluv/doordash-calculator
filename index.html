@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoorDash Order Worth Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(238, 90, 36, 0.3);
+        }
+        
+        .result {
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .result.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .worth-it {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 184, 148, 0.3);
+        }
+        
+        .not-worth-it {
+            background: linear-gradient(45deg, #e17055, #fd79a8);
+            color: white;
+            box-shadow: 0 10px 30px rgba(225, 112, 85, 0.3);
+        }
+        
+        .maybe {
+            background: linear-gradient(45deg, #fdcb6e, #e17055);
+            color: white;
+            box-shadow: 0 10px 30px rgba(253, 203, 110, 0.3);
+        }
+        
+        .metrics {
+            background: rgba(116, 75, 162, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .metric:last-child {
+            margin-bottom: 0;
+        }
+        
+        .tips {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .tips h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .tips ul {
+            color: #34495e;
+            padding-left: 20px;
+        }
+        
+        .tips li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 DoorDash Order Calculator</h1>
+        
+        <div class="input-group">
+            <label for="distance">Distance (km):</label>
+            <input type="number" id="distance" placeholder="Enter distance in km" step="0.1" min="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="payout">Total Payout ($):</label>
+            <input type="number" id="payout" placeholder="Enter total payout" step="0.25" min="0">
+        </div>
+        
+        <button class="calculate-btn" onclick="calculateWorth()">Calculate Worth</button>
+        
+        <div id="result" class="result"></div>
+        
+        <div id="metrics" class="metrics" style="display: none;">
+            <div class="metric">
+                <span>Rate per km:</span>
+                <span id="rate-per-km">-</span>
+            </div>
+            <div class="metric">
+                <span>Estimated time:</span>
+                <span id="estimated-time">-</span>
+            </div>
+            <div class="metric">
+                <span>Hourly rate:</span>
+                <span id="hourly-rate">-</span>
+            </div>
+            <div class="metric">
+                <span>Gas cost:</span>
+                <span id="gas-cost">-</span>
+            </div>
+        </div>
+        
+        <div class="tips">
+            <h3>💡 Quick Tips</h3>
+            <ul>
+                <li><strong>Worth It:</strong> $2+ per km, $18+ per hour</li>
+                <li><strong>Maybe:</strong> $1.50-$2 per km, $15-$18 per hour</li>
+                <li><strong>Skip:</strong> Less than $1.50 per km, under $15 per hour</li>
+                <li>Consider traffic, parking difficulty, and restaurant wait times</li>
+                <li>Factor in return distance if going to a dead zone</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function calculateWorth() {
+            const distance = parseFloat(document.getElementById('distance').value);
+            const payout = parseFloat(document.getElementById('payout').value);
+            const resultDiv = document.getElementById('result');
+            const metricsDiv = document.getElementById('metrics');
+            
+            if (!distance || !payout || distance <= 0 || payout <= 0) {
+                resultDiv.innerHTML = '⚠️ Please enter valid distance and payout values';
+                resultDiv.className = 'result not-worth-it show';
+                metricsDiv.style.display = 'none';
+                return;
+            }
+            
+            // Calculate metrics
+            const ratePerKm = payout / distance;
+            
+            // Estimate time: 2 min pickup + 2 min per km driving + 2 min dropoff
+            const estimatedTimeMinutes = 2 + (distance * 2) + 2;
+            const estimatedTimeHours = estimatedTimeMinutes / 60;
+            
+            // Hourly rate calculation
+            const hourlyRate = payout / estimatedTimeHours;
+            
+            // Gas cost estimation (assuming 10L/100km and $1.40/L)
+            const gasCost = (distance * 10 / 100) * 1.40;
+            
+            // Net profit after gas
+            const netProfit = payout - gasCost;
+            const netRatePerKm = netProfit / distance;
+            const netHourlyRate = netProfit / estimatedTimeHours;
+            
+            // Update metrics display
+            document.getElementById('rate-per-km').textContent = `$${ratePerKm.toFixed(2)}`;
+            document.getElementById('estimated-time').textContent = `${estimatedTimeMinutes.toFixed(0)} min`;
+            document.getElementById('hourly-rate').textContent = `$${hourlyRate.toFixed(2)}`;
+            document.getElementById('gas-cost').textContent = `$${gasCost.toFixed(2)}`;
+            
+            // Determine if worth it based on multiple criteria
+            let isWorthIt = false;
+            let isMaybe = false;
+            let reason = '';
+            
+            if (ratePerKm >= 2.0 && hourlyRate >= 18) {
+                isWorthIt = true;
+                reason = `✅ WORTH IT! Great rate of $${ratePerKm.toFixed(2)}/km and $${hourlyRate.toFixed(0)}/hour`;
+            } else if (ratePerKm >= 1.5 && hourlyRate >= 15) {
+                isMaybe = true;
+                reason = `🤔 MAYBE - $${ratePerKm.toFixed(2)}/km, $${hourlyRate.toFixed(0)}/hour. Consider traffic & wait times.`;
+            } else {
+                reason = `❌ SKIP IT - Only $${ratePerKm.toFixed(2)}/km and $${hourlyRate.toFixed(0)}/hour. Too low!`;
+            }
+            
+            // Special cases
+            if (distance <= 2 && payout >= 5) {
+                isWorthIt = true;
+                reason = `✅ WORTH IT! Short distance (${distance}km) with decent pay ($${payout})`;
+            } else if (distance > 8 && ratePerKm < 2.5) {
+                isWorthIt = false;
+                isMaybe = false;
+                reason = `❌ SKIP IT - Too far (${distance}km) for the pay. You'll drive back empty!`;
+            }
+            
+            // Apply result styling
+            if (isWorthIt) {
+                resultDiv.className = 'result worth-it show';
+            } else if (isMaybe) {
+                resultDiv.className = 'result maybe show';
+            } else {
+                resultDiv.className = 'result not-worth-it show';
+            }
+            
+            resultDiv.innerHTML = reason;
+            metricsDiv.style.display = 'block';
+        }
+        
+        // Allow Enter key to calculate
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateWorth();
+            }
+        });
+        
+        // Auto-calculate on input change (with debounce)
+        let timeoutId;
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(calculateWorth, 500);
+            });
+        });
+    </script>
+</body>
+</html>
