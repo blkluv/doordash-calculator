@@ -204,9 +204,10 @@
         <div class="tips">
             <h3>💡 Quick Tips</h3>
             <ul>
-                <li><strong>Worth It:</strong> $2+ per km, $18+ per hour</li>
-                <li><strong>Maybe:</strong> $1.50-$2 per km, $15-$18 per hour</li>
-                <li><strong>Skip:</strong> Less than $1.50 per km, under $15 per hour</li>
+                <li><strong>Worth It:</strong> $2.20+ per km, $20+ per hour</li>
+                <li><strong>Maybe:</strong> $1.80-$2.20 per km, $16-$20 per hour</li>
+                <li><strong>Skip:</strong> Less than $1.80 per km, under $16 per hour</li>
+                <li>BRZ costs: ~$0.39/km (premium gas + sports car maintenance)</li>
                 <li>Consider traffic, parking difficulty, and restaurant wait times</li>
                 <li>Factor in return distance if going to a dead zone</li>
             </ul>
@@ -237,9 +238,9 @@
             // Hourly rate calculation
             const hourlyRate = payout / estimatedTimeHours;
             
-            // Total vehicle costs: gas + wear & tear (assuming 10L/100km at $1.60/L + $0.20/km maintenance)
-            const gasCost = (distance * 10 / 100) * 1.60;
-            const wearTearCost = distance * 0.20;
+            // BRZ-specific costs: Real-world fuel economy ~8.5L/100km, gas $1.60/L, higher maintenance for sports car
+            const gasCost = (distance * 8.5 / 100) * 1.60;
+            const wearTearCost = distance * 0.25; // Higher for sports car (tires, brakes, clutch)
             const totalVehicleCost = gasCost + wearTearCost;
             
             // Net profit after all vehicle costs
@@ -258,24 +259,24 @@
             let isMaybe = false;
             let reason = '';
             
-            if (ratePerKm >= 2.0 && hourlyRate >= 18) {
+            if (ratePerKm >= 2.2 && hourlyRate >= 20) {
                 isWorthIt = true;
-                reason = `✅ WORTH IT! Great rate of $${ratePerKm.toFixed(2)}/km and $${hourlyRate.toFixed(0)}/hour`;
-            } else if (ratePerKm >= 1.5 && hourlyRate >= 15) {
+                reason = `✅ WORTH IT! Great rate of ${ratePerKm.toFixed(2)}/km and ${hourlyRate.toFixed(0)}/hour`;
+            } else if (ratePerKm >= 1.8 && hourlyRate >= 16) {
                 isMaybe = true;
-                reason = `🤔 MAYBE - $${ratePerKm.toFixed(2)}/km, $${hourlyRate.toFixed(0)}/hour. Consider traffic & wait times.`;
+                reason = `🤔 MAYBE - ${ratePerKm.toFixed(2)}/km, ${hourlyRate.toFixed(0)}/hour. Consider traffic & wait times.`;
             } else {
-                reason = `❌ SKIP IT - Only $${ratePerKm.toFixed(2)}/km and $${hourlyRate.toFixed(0)}/hour. Too low!`;
+                reason = `❌ SKIP IT - Only ${ratePerKm.toFixed(2)}/km and ${hourlyRate.toFixed(0)}/hour. Too low for BRZ costs!`;
             }
             
-            // Special cases
-            if (distance <= 2 && payout >= 5) {
+            // Special cases for BRZ
+            if (distance <= 2 && payout >= 6) {
                 isWorthIt = true;
-                reason = `✅ WORTH IT! Short distance (${distance}km) with decent pay ($${payout})`;
-            } else if (distance > 6 && ratePerKm < 2.2) {
+                reason = `✅ WORTH IT! Short distance (${distance}km) with good pay (${payout}) for sports car`;
+            } else if (distance > 5 && ratePerKm < 2.5) {
                 isWorthIt = false;
                 isMaybe = false;
-                reason = `❌ SKIP IT - Too far (${distance}km) for the pay. Consider return distance!`;
+                reason = `❌ SKIP IT - Too far (${distance}km) for BRZ costs. Consider return distance!`;
             }
             
             // Apply result styling
