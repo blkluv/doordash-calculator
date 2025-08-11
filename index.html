@@ -196,7 +196,7 @@
                 <span id="hourly-rate">-</span>
             </div>
             <div class="metric">
-                <span>Gas cost:</span>
+                <span>Vehicle costs:</span>
                 <span id="gas-cost">-</span>
             </div>
         </div>
@@ -230,26 +230,28 @@
             // Calculate metrics
             const ratePerKm = payout / distance;
             
-            // Estimate time: 2 min pickup + 2 min per km driving + 2 min dropoff
-            const estimatedTimeMinutes = 2 + (distance * 2) + 2;
+            // More realistic time estimate: 3 min pickup + 3 min per km driving + 2 min dropoff
+            const estimatedTimeMinutes = 3 + (distance * 3) + 2;
             const estimatedTimeHours = estimatedTimeMinutes / 60;
             
             // Hourly rate calculation
             const hourlyRate = payout / estimatedTimeHours;
             
-            // Gas cost estimation (assuming 10L/100km and $1.40/L)
-            const gasCost = (distance * 10 / 100) * 1.40;
+            // Total vehicle costs: gas + wear & tear (assuming 10L/100km at $1.60/L + $0.20/km maintenance)
+            const gasCost = (distance * 10 / 100) * 1.60;
+            const wearTearCost = distance * 0.20;
+            const totalVehicleCost = gasCost + wearTearCost;
             
-            // Net profit after gas
-            const netProfit = payout - gasCost;
+            // Net profit after all vehicle costs
+            const netProfit = payout - totalVehicleCost;
             const netRatePerKm = netProfit / distance;
             const netHourlyRate = netProfit / estimatedTimeHours;
             
             // Update metrics display
-            document.getElementById('rate-per-km').textContent = `$${ratePerKm.toFixed(2)}`;
+            document.getElementById('rate-per-km').textContent = `${ratePerKm.toFixed(2)}`;
             document.getElementById('estimated-time').textContent = `${estimatedTimeMinutes.toFixed(0)} min`;
-            document.getElementById('hourly-rate').textContent = `$${hourlyRate.toFixed(2)}`;
-            document.getElementById('gas-cost').textContent = `$${gasCost.toFixed(2)}`;
+            document.getElementById('hourly-rate').textContent = `${hourlyRate.toFixed(2)}`;
+            document.getElementById('gas-cost').textContent = `${totalVehicleCost.toFixed(2)}`;
             
             // Determine if worth it based on multiple criteria
             let isWorthIt = false;
@@ -270,10 +272,10 @@
             if (distance <= 2 && payout >= 5) {
                 isWorthIt = true;
                 reason = `✅ WORTH IT! Short distance (${distance}km) with decent pay ($${payout})`;
-            } else if (distance > 8 && ratePerKm < 2.5) {
+            } else if (distance > 6 && ratePerKm < 2.2) {
                 isWorthIt = false;
                 isMaybe = false;
-                reason = `❌ SKIP IT - Too far (${distance}km) for the pay. You'll drive back empty!`;
+                reason = `❌ SKIP IT - Too far (${distance}km) for the pay. Consider return distance!`;
             }
             
             // Apply result styling
