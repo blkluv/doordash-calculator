@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🚗 Delivery Order Calculator</title>
+<title>🚗📦 Delivery Calculator 🚀💰</title>
 <style>
 * {margin:0;padding:0;box-sizing:border-box;}
 body {
@@ -26,7 +26,6 @@ body {
 }
 h1 {
     text-align:center;
-    color:#2c3e50;
     margin-bottom:30px;
     font-size:2.2em;
     background:linear-gradient(45deg,#ff6b6b,#ee5a24);
@@ -34,7 +33,7 @@ h1 {
     -webkit-text-fill-color:transparent;
 }
 .input-group {margin-bottom:20px;}
-label {display:block;margin-bottom:8px;color:#34495e;font-weight:600;font-size:1.1em;}
+label {display:block;margin-bottom:8px;font-weight:600;font-size:1.1em;}
 input, select {
     width:100%;
     padding:15px;
@@ -44,11 +43,7 @@ input, select {
     transition:all 0.3s ease;
     background:rgba(255,255,255,0.8);
 }
-input:focus, select:focus {
-    outline:none;
-    border-color:#667eea;
-    box-shadow:0 0 0 3px rgba(102,126,234,0.1);
-}
+input:focus, select:focus {outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,0.1);}
 .calculate-btn {
     width:100%;
     padding:18px;
@@ -62,90 +57,63 @@ input:focus, select:focus {
     transition:all 0.3s ease;
     margin-bottom:25px;
 }
-.calculate-btn:hover {
-    transform:translateY(-2px);
-    box-shadow:0 10px 20px rgba(238,90,36,0.3);
-}
-.result {
-    padding:20px;
-    border-radius:15px;
-    text-align:center;
-    font-size:1.3em;
-    font-weight:600;
-    margin-bottom:20px;
-    opacity:0;
-    transform:translateY(20px);
-    transition:all 0.5s ease;
-}
+.calculate-btn:hover {transform:translateY(-2px);box-shadow:0 10px 20px rgba(238,90,36,0.3);}
+.result {padding:20px;border-radius:15px;text-align:center;font-size:1.3em;font-weight:600;margin-bottom:20px;opacity:0;transform:translateY(20px);transition:all 0.5s ease;}
 .result.show {opacity:1;transform:translateY(0);}
 .worth-it {background:linear-gradient(45deg,#00b894,#00cec9);color:white;box-shadow:0 10px 30px rgba(0,184,148,0.3);}
 .not-worth-it {background:linear-gradient(45deg,#e17055,#fd79a8);color:white;box-shadow:0 10px 30px rgba(225,112,85,0.3);}
 .maybe {background:linear-gradient(45deg,#fdcb6e,#e17055);color:white;box-shadow:0 10px 30px rgba(253,203,110,0.3);}
-.metrics {
-    background:rgba(116,75,162,0.1);
-    border-radius:12px;
-    padding:20px;
-    margin-top:20px;
-}
-.metric {display:flex;justify-content:space-between;margin-bottom:10px;color:#2c3e50;}
+.metrics {background:rgba(116,75,162,0.1);border-radius:12px;padding:20px;margin-top:20px;}
+.metric {display:flex;justify-content:space-between;margin-bottom:10px;}
 .metric:last-child {margin-bottom:0;}
-.tips {
-    background:rgba(102,126,234,0.1);
-    border-radius:12px;
-    padding:20px;
-    margin-top:20px;
-}
-.tips h3 {color:#2c3e50;margin-bottom:15px;text-align:center;}
-.tips ul {color:#34495e;padding-left:20px;}
-.tips li {margin-bottom:8px;}
+.tips {background:rgba(102,126,234,0.1);border-radius:12px;padding:20px;margin-top:20px;text-align:center;}
+.tips p {margin-bottom:10px;font-weight:600;font-size:1em;}
 </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🚗 Delivery Calculator</h1>
+    <h1>🚗📦 Delivery Calculator 🚀💰</h1>
 
     <div class="input-group">
-        <label for="distance">Distance (miles):</label>
+        <label for="distance">🛣 Distance (miles):</label>
         <input type="number" id="distance" placeholder="Enter distance in miles" step="0.1" min="0">
     </div>
 
     <div class="input-group">
-        <label for="payout">Total Payout ($):</label>
+        <label for="payout">💵 Total Payout ($):</label>
         <input type="number" id="payout" placeholder="Enter total payout" step="0.25" min="0">
     </div>
 
     <div class="input-group">
-        <label for="vehicle">Vehicle Type:</label>
+        <label for="vehicle">🚗 Vehicle Type:</label>
         <select id="vehicle">
-            <option value="economy">Economy Car</option>
-            <option value="suv">SUV</option>
-            <option value="sports">Sports Car</option>
-            <option value="ev">Electric Vehicle</option>
+            <option value="economy">🚙 Economy Car</option>
+            <option value="suv">🛻 SUV</option>
+            <option value="sports">🏎 Sports Car</option>
+            <option value="ev">⚡ Electric Vehicle</option>
         </select>
     </div>
 
-    <button class="calculate-btn" onclick="calculateWorth()">Calculate Worth</button>
+    <button class="calculate-btn" onclick="calculateWorth()">📊 Calculate Worth</button>
 
     <div id="result" class="result"></div>
 
     <div id="metrics" class="metrics" style="display:none;">
-        <div class="metric"><span>Rate per mile:</span><span id="rate-per-mile">-</span></div>
-        <div class="metric"><span>Estimated time:</span><span id="estimated-time">-</span></div>
-        <div class="metric"><span>Hourly rate:</span><span id="hourly-rate">-</span></div>
-        <div class="metric"><span>Vehicle costs:</span><span id="vehicle-cost">-</span></div>
-        <div class="metric"><span>Net profit:</span><span id="net-profit">-</span></div>
+        <div class="metric"><span>💵 Rate per mile:</span><span id="rate-per-mile">-</span></div>
+        <div class="metric"><span>⏱ Estimated time:</span><span id="estimated-time">-</span></div>
+        <div class="metric"><span>💰 Hourly rate:</span><span id="hourly-rate">-</span></div>
+        <div class="metric"><span>🛠 Vehicle costs:</span><span id="vehicle-cost">-</span></div>
+        <div class="metric"><span>💎 Net profit:</span><span id="net-profit">-</span></div>
     </div>
 
     <div class="tips">
-        <h3>💡 Quick Tips</h3>
-        <ul>
-            <li><strong>Worth It:</strong> $3+/mile, $25+/hour</li>
-            <li><strong>Maybe:</strong> $2-$3/mile, $18-$25/hour</li>
-            <li><strong>Skip:</strong> <$2/mile, under $18/hour</li>
-            <li>Vehicle costs vary by type (fuel, maintenance, EV charging)</li>
-            <li>Consider traffic, parking, and restaurant wait times</li>
-        </ul>
+        <p>💡 Quick Tips</p>
+        <p>✅ Worth It: $3+/mile, $25+/hour</p>
+        <p>🤔 Maybe: $2-$3/mile, $18-$25/hour</p>
+        <p>❌ Skip: <$2/mile, under $18/hour</p>
+        <p>🚗 Vehicle costs vary by type (fuel, maintenance, EV charging)</p>
+        <p>⏱ Consider traffic, parking, and restaurant wait times</p>
     </div>
 </div>
 
@@ -164,21 +132,12 @@ function calculateWorth() {
         return;
     }
 
-    // Vehicle costs (fuel or electricity + maintenance)
     let vehicleCost = 0;
     switch(vehicle) {
-        case 'economy':
-            vehicleCost = (distance / 30) * 4 + distance*0.1; // 30 MPG, $4/gallon + maintenance
-            break;
-        case 'suv':
-            vehicleCost = (distance / 20) * 4 + distance*0.15; // 20 MPG + higher maintenance
-            break;
-        case 'sports':
-            vehicleCost = (distance / 27.7) * 4 + distance*0.25; // 27.7 MPG + sports car upkeep
-            break;
-        case 'ev':
-            vehicleCost = distance*0.05 + distance*0.05; // $0.05/mile charging + minor maintenance
-            break;
+        case 'economy': vehicleCost = (distance / 30) * 4 + distance*0.1; break;
+        case 'suv': vehicleCost = (distance / 20) * 4 + distance*0.15; break;
+        case 'sports': vehicleCost = (distance / 27.7) * 4 + distance*0.25; break;
+        case 'ev': vehicleCost = distance*0.05 + distance*0.05; break;
     }
 
     const ratePerMile = payout / distance;
@@ -214,13 +173,11 @@ function calculateWorth() {
     metricsDiv.style.display='block';
 }
 
-// Enter key and auto-calc
 document.addEventListener('keypress', e => { if(e.key==='Enter') calculateWorth(); });
 let timeoutId;
 document.querySelectorAll('input, select').forEach(input => {
     input.addEventListener('input', ()=>{clearTimeout(timeoutId); timeoutId=setTimeout(calculateWorth,500);});
 });
 </script>
-
 </body>
-</html>
+</html> 
