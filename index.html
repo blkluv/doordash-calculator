@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Delivery Calculator </title>
+<title>🚗📦 Delivery Calculator 🚀💰</title>
 <style>
 * {margin:0;padding:0;box-sizing:border-box;}
 body {
@@ -26,11 +26,19 @@ body {
 }
 h1 {
     text-align:center;
-    margin-bottom:30px;
+    margin-bottom:10px;
     font-size:2.2em;
     background:linear-gradient(45deg,#ff6b6b,#ee5a24);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
+}
+.site-name {
+    text-align:center;
+    font-size:1.1em;
+    color:#fff;
+    opacity:0.85;
+    text-shadow:0 2px 4px rgba(0,0,0,0.4);
+    margin-bottom:25px;
 }
 .input-group {margin-bottom:20px;}
 label {display:block;margin-bottom:8px;font-weight:600;font-size:1.1em;}
@@ -73,7 +81,8 @@ input:focus, select:focus {outline:none;border-color:#667eea;box-shadow:0 0 0 3p
 <body>
 
 <div class="container">
-    <h1>Delivery Calculator </h1>
+    <h1>🚗📦 Delivery Calculator 🚀💰</h1>
+    <p class="site-name">🌐 math.w3w.delivery</p>
 
     <div class="input-group">
         <label for="distance">🛣 Distance (miles):</label>
@@ -125,7 +134,7 @@ function calculateWorth() {
     const resultDiv = document.getElementById('result');
     const metricsDiv = document.getElementById('metrics');
 
-    if(!distance || !payout || distance <=0 || payout <=0) {
+    if(!distance || !payout || distance <=0 || payout <=0){
         resultDiv.innerHTML = '⚠️ Please enter valid distance and payout values';
         resultDiv.className = 'result not-worth-it show';
         metricsDiv.style.display='none';
@@ -133,19 +142,19 @@ function calculateWorth() {
     }
 
     let vehicleCost = 0;
-    switch(vehicle) {
-        case 'economy': vehicleCost = (distance / 30) * 4 + distance*0.1; break;
-        case 'suv': vehicleCost = (distance / 20) * 4 + distance*0.15; break;
-        case 'sports': vehicleCost = (distance / 27.7) * 4 + distance*0.25; break;
+    switch(vehicle){
+        case 'economy': vehicleCost = (distance/30)*4 + distance*0.1; break;
+        case 'suv': vehicleCost = (distance/20)*4 + distance*0.15; break;
+        case 'sports': vehicleCost = (distance/27.7)*4 + distance*0.25; break;
         case 'ev': vehicleCost = distance*0.05 + distance*0.05; break;
     }
 
-    const ratePerMile = payout / distance;
+    const ratePerMile = payout/distance;
     const estimatedTimeMinutes = 3 + distance*3 + 2;
     const estimatedTimeHours = estimatedTimeMinutes/60;
-    const hourlyRate = payout / estimatedTimeHours;
-    const netProfit = payout - vehicleCost;
-    const netHourlyRate = netProfit / estimatedTimeHours;
+    const hourlyRate = payout/estimatedTimeHours;
+    const netProfit = payout-vehicleCost;
+    const netHourlyRate = netProfit/estimatedTimeHours;
 
     document.getElementById('rate-per-mile').textContent = `$${ratePerMile.toFixed(2)}`;
     document.getElementById('estimated-time').textContent = `${estimatedTimeMinutes.toFixed(0)} min`;
@@ -179,5 +188,6 @@ document.querySelectorAll('input, select').forEach(input => {
     input.addEventListener('input', ()=>{clearTimeout(timeoutId); timeoutId=setTimeout(calculateWorth,500);});
 });
 </script>
+
 </body>
-</html> 
+</html>
